@@ -56,11 +56,11 @@ function getHeader() {
     appInfo,
   );
   const header = {
-    app_key: '5lOrfCGW',
+    app_key: appInfo.app_key,
     Sign: _0x57ff41(_0x57ff41(Object.values(_0x1e9cef).join('')))
-      ['split']('')
-      ['reverse']()
-      ['join'](''),
+      .split('')
+      .reverse()
+      .join(''),
     T: _0x1e9cef.t,
     N: _0x1e9cef.n,
     // Uuid: '9VSFYU81GRHA7H1W',
