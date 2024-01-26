@@ -69,20 +69,28 @@ function getHeader() {
 }
 
 async function sign(info) {
-  const sign = await axios.post('https://cloud.banu.cn/api/sign-in', { member_id: info }, { headers: getHeader() });
-  const userInfo = await axios.get('https://cloud.banu.cn/api/member/statistic', {
-    headers: getHeader(),
-    params: { member_id: info },
-  });
-  await notification.pushMessage({
-    title: '巴奴每日签到',
-    content: `用户名：${userInfo.data.data.name}
+  try {
+    const sign = await axios.post('https://cloud.banu.cn/api/sign-in', { member_id: info }, { headers: getHeader() });
+    const userInfo = await axios.get('https://cloud.banu.cn/api/member/statistic', {
+      headers: getHeader(),
+      params: { member_id: info },
+    });
+    await notification.pushMessage({
+      title: '巴奴每日签到',
+      content: `用户名：${userInfo.data.data.name}
     签到时间：${new Date().toLocaleString()}
     当前积分：${userInfo.data.data.points}
     签到状态：${sign.data.message}
     `,
-    msgtype: 'text',
-  });
+      msgtype: 'text',
+    });
+  } catch (e) {
+    await notification.pushMessage({
+      title: '巴奴每日签到',
+      content: `签到失败：${e}`,
+      msgtype: 'text',
+    });
+  }
 }
 
 for (let i = 0; i < memberIds.length; i++) {
