@@ -5,6 +5,8 @@ import notification from '../utils/notification-kit';
 import dayjs from 'dayjs';
 import tz from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+dayjs.extend(tz);
+dayjs.extend(utc);
 
 const memberIds = process.env.MEMBER_IDS.split(',');
 
