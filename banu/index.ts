@@ -79,7 +79,7 @@ async function sign(info) {
     content: `用户名：${userInfo.data.data.name}
     签到时间：${new Date().toLocaleString()}
     当前积分：${userInfo.data.data.points}
-    签到状态：${sign.data.data.message}
+    签到状态：${sign.data.message}
     `,
     msgtype: 'text',
   });
