@@ -1,4 +1,4 @@
-name: banu
+name: banu-sign
 
 on:
   workflow_dispatch:
