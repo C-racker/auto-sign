@@ -24,5 +24,4 @@ jobs:
         MEMBER_IDS: ${{ secrets.MEMBER_IDS }}
       run: |
         npm install
-        node banu/index.js
-
+        node banu/index.ts
