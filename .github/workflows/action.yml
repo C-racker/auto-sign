@@ -1,4 +1,4 @@
-name: nodejs tb autosign
+name: banu
 
 on:
   push:
