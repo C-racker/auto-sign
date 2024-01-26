@@ -2,6 +2,7 @@ import { md5 } from 'js-md5';
 import axios from 'axios';
 import qs from 'qs';
 import notification from '../utils/notification-kit';
+import dayjs from 'dayjs';
 const memberIds = process.env.MEMBER_IDS.split(',');
 
 function _0x5634f8() {
@@ -78,16 +79,17 @@ async function sign(info) {
     await notification.pushMessage({
       title: '巴奴每日签到',
       content: `用户名：${userInfo.data.data.name}
-    签到时间：${new Date().toLocaleString()}
-    当前积分：${userInfo.data.data.points}
-    签到状态：${sign.data.message}
-    `,
+签到时间：${dayjs().format('YYYY-MM-DD HH:mm:ss')}
+当前积分：${userInfo.data.data.points}
+签到状态：${sign.data.message}`,
       msgtype: 'text',
     });
   } catch (e) {
     await notification.pushMessage({
       title: '巴奴每日签到',
-      content: `签到失败：${e}`,
+      content: `签到失败：${e}
+签到时间：${dayjs().format('YYYY-MM-DD HH:mm:ss')}
+`,
       msgtype: 'text',
     });
   }
