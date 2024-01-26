@@ -20,6 +20,7 @@ jobs:
     - name: npm install
       env:
         MEMBER_IDS: ${{ secrets.MEMBER_IDS }}
+        DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
       run: |
         npm install
         node --require ts-node/register banu/index.ts
