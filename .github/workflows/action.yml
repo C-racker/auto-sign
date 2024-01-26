@@ -8,9 +8,7 @@ on:
 
 jobs:
   one:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     # 使用 node:18
@@ -19,9 +17,9 @@ jobs:
       with:
         node-version: 18.x
     # npm install
-    - name: npm install and do sign
+    - name: npm install
       env:
         MEMBER_IDS: ${{ secrets.MEMBER_IDS }}
       run: |
         npm install
-        node --require ts-node/register ../banu/index.ts
+        node --require ts-node/register banu/index.ts
