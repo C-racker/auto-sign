@@ -9,7 +9,7 @@ const getJD = async () => {
   );
   await notification.pushMessage({
     title: '百度code领取',
-    content: sign.data,
+    content: `${sign.data}`,
     msgtype: 'text',
   });
 };
