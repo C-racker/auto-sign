@@ -1,0 +1,25 @@
+name: banu-sign
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 22 * * *' # 北京时间上午06:30
+
+jobs:
+  one:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # 使用 node:18
+      - name: use Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      # npm install
+      - name: npm install
+        env:
+          MEMBER_IDS: ${{ secrets.MEMBER_IDS }}
+          DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
+        run: |
+          npm install
+          node --require ts-node/register banu/index.ts
