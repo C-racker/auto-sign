@@ -12,5 +12,6 @@ const getJD = async () => {
     content: `${sign.data}`,
     msgtype: 'text',
   });
+  console.log('sign.data :', `${sign.data}`);
 };
 getJD();
