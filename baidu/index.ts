@@ -1,4 +1,5 @@
 import axios from 'axios';
+import notification from '../utils/notification-kit';
 
 const getJD = async () => {
   const sign = await axios.post(
@@ -6,6 +7,10 @@ const getJD = async () => {
     {},
     { headers: { cookie: process.env.BAIDU_COOKIE } },
   );
-  console.log('sign :', sign.data);
+  await notification.pushMessage({
+    title: '百度code领取',
+    content: sign.data,
+    msgtype: 'text',
+  });
 };
 getJD();
