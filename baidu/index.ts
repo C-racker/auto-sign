@@ -9,9 +9,9 @@ const getJD = async () => {
   );
   await notification.pushMessage({
     title: '百度code领取',
-    content: `${sign.data}`,
+    content: `${JSON.stringify(sign.data)}`,
     msgtype: 'text',
   });
-  console.log('sign.data :', `${sign.data}`);
+  console.log('sign.data :', `${JSON.stringify(sign.data)}`);
 };
 getJD();
