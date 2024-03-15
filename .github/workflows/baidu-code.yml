@@ -3,7 +3,7 @@ name: baidu-code
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 22 * * *' # 北京时间上午06:30
+    - cron: '11 * * * *' # 北京时间上午06:30
 
 jobs:
   one:
