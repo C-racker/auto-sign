@@ -20,11 +20,11 @@ async function getUserInfo() {
     });
     if (result.data.errcode === 0) {
       userInfo = result.data.data.userinfo;
-      signIn();
+      await signIn();
     } else {
       await notification.pushMessage({
         title: '美的会员',
-        content: `${JSON.stringify(result.data)}`,
+        content: `${JSON.stringify(result.data)} 获取会员信息失败`,
         msgtype: 'text',
       });
     }
@@ -36,23 +36,14 @@ async function signIn() {
   try {
     const res = await axios.get('https://mvip.midea.cn/my/score/create_daily_score', {
       headers: {
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        cookie: process.env.MEIDI_COOKIE,
+        Cookie: process.env.MEIDI_COOKIE,
       },
     });
-    if (res.data.errcode == 0) {
-      await notification.pushMessage({
-        title: '美的会员',
-        content: `${userInfo.Nickname} 签到成功`,
-        msgtype: 'text',
-      });
-    } else {
-      await notification.pushMessage({
-        title: '美的会员',
-        content: `${userInfo.Nickname} ${JSON.stringify(res.data)}`,
-        msgtype: 'text',
-      });
-    }
+    await notification.pushMessage({
+      title: '美的会员',
+      content: `${JSON.stringify(res.data)}`,
+      msgtype: 'text',
+    });
   } catch (e) {
     console.log(e);
   }
