@@ -32,7 +32,7 @@ export class NotificationKit {
     const trycatch = async (name: string, fn: Function) => {
       try {
         await fn(options);
-        console.log(`[${name}]: 消息推送成功! [${JSON.stringify(options)}]`);
+        console.log(`[${name}]: 消息推送成功!! [${JSON.stringify(options)}]`);
       } catch (e: any) {
         console.log(`[${name}]: 消息推送失败! 原因: ${e.message}`);
       }
