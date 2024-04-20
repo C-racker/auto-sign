@@ -9,7 +9,6 @@ dayjs.extend(tz);
 dayjs.extend(utc);
 
 const memberIds = process.env.MEMBER_IDS.split(',');
-console.log('memberIds :', memberIds);
 function _0x5634f8() {
   let _0x537983;
   const _0x45a547 = arguments.length > 0x0 && void 0x0 !== arguments[0x0] ? arguments[0x0] : 0x10;
@@ -83,7 +82,8 @@ async function sign(info) {
     });
     await notification.pushMessage({
       title: '巴奴每日签到',
-      content: `用户名：${userInfo.data.data.name}
+      content: `ID：${info}
+用户名：${userInfo.data.data.name}
 签到时间：${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}
 当前积分：${userInfo.data.data.points}
 签到状态：${sign.data.message}`,
