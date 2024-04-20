@@ -1,15 +1,15 @@
 import { md5 } from 'js-md5';
 import axios from 'axios';
-import qs from 'qs';
 import notification from '../utils/notification-kit';
 import dayjs from 'dayjs';
 import tz from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+
 dayjs.extend(tz);
 dayjs.extend(utc);
 
 const memberIds = process.env.MEMBER_IDS.split(',');
-
+console.log('memberIds :', memberIds);
 function _0x5634f8() {
   let _0x537983;
   const _0x45a547 = arguments.length > 0x0 && void 0x0 !== arguments[0x0] ? arguments[0x0] : 0x10;
