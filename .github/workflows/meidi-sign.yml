@@ -20,6 +20,7 @@ jobs:
         env:
           MEIDI_COOKIE: ${{ secrets.MEIDI_COOKIE }}
           DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
+          DINGDING_SECRET: ${{ secrets.DINGDING_SECRET }}
         run: |
           npm install
           node --require ts-node/register meidi/index.ts

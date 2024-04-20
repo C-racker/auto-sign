@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as process from 'node:process';
 
 const crypto = require('crypto');
-const querystring = require('querystring');
 interface NotificationOptions {
   title: string;
   content: string;
