@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="习酒小程序" type="NodeJSConfigurationType" node-parameters="--require ts-node/register " path-to-js-file="xijiu/index.ts" working-dir="$PROJECT_DIR$">
+    <method v="2" />
+  </configuration>
+</component>
