@@ -18,7 +18,7 @@ async function getUserInfo() {
     let result = await axios.get('https://apimallwm.exijiu.com/member/info', {
       headers: headers,
     });
-    userInfo = result.data;
+    userInfo = result.data.data;
     await signIn();
   } catch (e) {
     console.log(e);
