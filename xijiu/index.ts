@@ -31,7 +31,7 @@ async function signIn() {
     });
     await notification.pushMessage({
       title: '习酒小程序',
-      content: `${userInfo.nick_name}
+      content: `${userInfo.nick_name} 当前积分：${userInfo.integration}
 ${JSON.stringify(res.data)}`,
       msgtype: 'text',
     });
