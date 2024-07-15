@@ -4,6 +4,7 @@ import notification from '../utils/notification-kit';
 import dayjs from 'dayjs';
 import tz from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import qs from 'qs';
 
 dayjs.extend(tz);
 dayjs.extend(utc);
@@ -32,7 +33,7 @@ function _0x5634f8() {
   return _0x134f97.join('');
 }
 
-function getHeader() {
+function getHeader(memberInfo) {
   const _0x57ff41 = function (_0x49eaee) {
     return md5(_0x49eaee).toString().toLocaleLowerCase();
   };
@@ -42,10 +43,10 @@ function getHeader() {
     app_secret: '6dfzNDNkyi',
   };
 
-  // const code = _0x57ff41(_0x57ff41(qs.stringify(Object.assign(Object.assign({}, appInfo), memberInfo))))
-  //   ['split']('')
-  //   ['reverse']()
-  //   ['join']('');
+  const code = _0x57ff41(_0x57ff41(qs.stringify(Object.assign(Object.assign({}, appInfo), memberInfo))))
+    ['split']('')
+    ['reverse']()
+    ['join']('');
 
   const _0x1e9cef = Object.assign(
     {
@@ -63,22 +64,23 @@ function getHeader() {
     T: _0x1e9cef.t,
     N: _0x1e9cef.n,
     // Uuid: '9VSFYU81GRHA7H1W',
-    // code: code,
-    // platform_version_name:
-    //   'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
-    // tenancy_id: 'banu',
-    // Referer: 'https://cdn-scp.banu.cn/',
+    code: code,
+    platform_version_name:
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
+    tenancy_id: 'banu',
+    Referer: 'https://cdn-scp.banu.cn/',
   };
   // console.log('header :', header);
   return header;
 }
 
 async function sign(info) {
+  const memberInfo = { member_id: info };
   try {
-    const sign = await axios.post('https://cloud.banu.cn/api/sign-in', { member_id: info }, { headers: getHeader() });
+    const sign = await axios.post('https://cloud.banu.cn/api/sign-in', memberInfo, { headers: getHeader(memberInfo) });
     const userInfo = await axios.get('https://cloud.banu.cn/api/member/statistic', {
-      headers: getHeader(),
-      params: { member_id: info },
+      headers: getHeader(memberInfo),
+      params: memberInfo,
     });
     await notification.pushMessage({
       title: '巴奴每日签到',
