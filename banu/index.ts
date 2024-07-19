@@ -57,20 +57,29 @@ function getHeader(memberInfo) {
   );
   const header = {
     app_key: appInfo.app_key,
-    Sign: _0x57ff41(_0x57ff41(Object.values(_0x1e9cef).join('')))
+    sign: _0x57ff41(_0x57ff41(Object.values(_0x1e9cef).join('')))
       .split('')
       .reverse()
       .join(''),
-    T: _0x1e9cef.t,
-    N: _0x1e9cef.n,
-    // Uuid: '9VSFYU81GRHA7H1W',
+    t: _0x1e9cef.t,
+    n: _0x1e9cef.n,
+    uuid: _0x5634f8(),
     code: code,
     'User-Agent':
       'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.50(0x18003231) NetType/WIFI Language/zh_CN miniProgram/wx71373698c47f9a9f',
     platform_version_name:
       'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.50(0x18003231) NetType/WIFI Language/zh_CN miniProgram/wx71373698c47f9a9f',
     tenancy_id: 'banu',
-    Referer: 'https://cdn-scp.banu.cn/',
+    accept: 'application/json',
+    referer: 'https://cdn-scp.banu.cn/',
+    source: '',
+    origin: 'https://cdn-scp.banu.cn',
+    'sec-fetch-dest': 'empty',
+    version: '2.3.8.5',
+    'sec-fetch-site': 'same-site',
+    'accept-language': 'zh-CN,zh-Hans;q=0.9',
+    'content-type': 'application/json; charset=utf-8',
+    'sec-fetch-mode': 'cors',
   };
   // console.log('header :', header);
   return header;
