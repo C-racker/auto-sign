@@ -81,32 +81,45 @@ async function sign(infoStr) {
     info[key] = value;
   });
   const memberInfo = { member_id: info.member_id };
+  const currentTime = dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss');
   try {
-    const enc_data = getData(memberInfo);
-    const sign = await axios.post(
-      'https://cloud.banu.cn/api/sign-in',
-      { enc_data: enc_data },
-      { headers: getHeader(info, enc_data) },
-    );
+    info.uuid = uuid();
     const userInfo = await axios.get('https://cloud.banu.cn/api/member/statistic', {
       headers: getHeader(info),
       params: memberInfo,
     });
+    const days = await axios.get('https://cloud.banu.cn/api/sign-in/days', {
+      params: memberInfo,
+      headers: getHeader(info),
+    });
+    let defaultContent = `ID：${info.member_id}
+用户名：${userInfo.data.data.name}
+签到时间：${currentTime}
+当前积分：${userInfo.data.data.points}`;
+    let signContent = '';
+    // 判断是否已经签到
+    if (days.data.data.is_sign_in) {
+      signContent = `签到状态：请勿重复签到`;
+    } else {
+      const enc_data = getData(memberInfo);
+      const sign = await axios.post(
+        'https://cloud.banu.cn/api/sign-in',
+        { enc_data: enc_data },
+        { headers: getHeader(info, enc_data) },
+      );
+      signContent = `签到状态：${sign.data.message}`;
+    }
     await notification.pushMessage({
       title: '巴奴每日签到',
-      content: `ID：${info.member_id}
-    用户名：${userInfo.data.data.name}
-    签到时间：${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}
-    当前积分：${userInfo.data.data.points}
-    签到状态：${sign.data.message}`,
+      content: `${defaultContent}
+${signContent}`,
       msgtype: 'text',
     });
   } catch (e) {
     await notification.pushMessage({
       title: '巴奴每日签到',
       content: `签到失败：${e}
-    签到时间：${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}
-    `,
+签到时间：${currentTime}`,
       msgtype: 'text',
     });
   }
