@@ -19,6 +19,7 @@ jobs:
       - name: npm install
         env:
           MEMBER_IDS: ${{ secrets.MEMBER_IDS }}
+          BANU_KEY: ${{ secrets.BANU_KEY }}
           DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
           DINGDING_SECRET: ${{ secrets.DINGDING_SECRET }}
         run: |

@@ -1,113 +1,112 @@
 import { md5 } from 'js-md5';
-import axios from 'axios';
-import notification from '../utils/notification-kit';
 import dayjs from 'dayjs';
 import tz from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import qs from 'qs';
+import CryptoJS from 'crypto-js';
+import axios from 'axios';
+import notification from '../utils/notification-kit';
 
 dayjs.extend(tz);
 dayjs.extend(utc);
 
+// 为了存活久一点留给动手能力强的人~~~
+const key = process.env.BANU_KEY;
 const memberIds = process.env.MEMBER_IDS.split(',');
-function _0x5634f8() {
-  let _0x537983;
-  const _0x45a547 = arguments.length > 0x0 && void 0x0 !== arguments[0x0] ? arguments[0x0] : 0x10;
-  let _0x5a4c27 = arguments.length > 0x1 && void 0x0 !== arguments[0x1] ? arguments[0x1] : 0x24;
-  const _0x268d14 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(''),
-    _0x134f97 = [];
-  let _0x4d50ee = 0x0;
-  if (((_0x5a4c27 = _0x5a4c27 || _0x268d14.length), _0x45a547)) {
-    for (_0x4d50ee = 0x0; _0x4d50ee < _0x45a547; _0x4d50ee++)
-      _0x134f97[_0x4d50ee] = _0x268d14[0x0 | (Math['random']() * _0x5a4c27)];
-  } else {
-    for (
-      _0x134f97[0x8] = _0x134f97[0xd] = _0x134f97[0x12] = _0x134f97[0x17] = '-', _0x134f97[0xe] = '4', _0x4d50ee = 0x0;
-      _0x4d50ee < 0x24;
-      _0x4d50ee++
-    )
-      _0x134f97[_0x4d50ee] ||
-        ((_0x537983 = 0x0 | (0x10 * Math['random']())),
-        (_0x134f97[_0x4d50ee] = _0x268d14[0x13 === _0x4d50ee ? (0x3 & _0x537983) | 0x8 : _0x537983]));
+function uuid() {
+  var n = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 16,
+    ce = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 36,
+    se = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(''),
+    pe = [],
+    de = 0;
+  if (((ce = ce || se.length), n)) for (de = 0; de < n; de++) pe[de] = se[0 | (Math.random() * ce)];
+  else {
+    var le = void 0;
+    for (pe[8] = pe[13] = pe[18] = pe[23] = '-', pe[14] = '4', de = 0; de < 36; de++)
+      pe[de] || ((le = 0 | (16 * Math.random())), (pe[de] = se[19 === de ? (3 & le) | 8 : le]));
   }
-  return _0x134f97.join('');
+  return pe.join('');
 }
-
-function getHeader(memberInfo) {
-  const _0x57ff41 = function (_0x49eaee) {
-    return md5(_0x49eaee).toString().toLocaleLowerCase();
+function getHeader(info, enc_data?) {
+  const _md5 = function (str) {
+    return md5(str).toString().toLocaleLowerCase();
   };
-
-  const appInfo = {
-    app_key: '5lOrfCGW',
-    app_secret: '6dfzNDNkyi',
-  };
-
-  const code = _0x57ff41(_0x57ff41(qs.stringify(Object.assign(Object.assign({}, appInfo), memberInfo))))
-    ['split']('')
-    ['reverse']()
-    ['join']('');
-
-  const _0x1e9cef = Object.assign(
-    {
-      t: Math.floor(new Date().getTime() / 1000),
-      n: _0x5634f8(),
-    },
-    appInfo,
-  );
-  const header = {
-    app_key: appInfo.app_key,
-    sign: _0x57ff41(_0x57ff41(Object.values(_0x1e9cef).join('')))
-      .split('')
-      .reverse()
-      .join(''),
-    t: _0x1e9cef.t,
-    n: _0x1e9cef.n,
-    uuid: _0x5634f8(),
-    code: code,
+  const appInfo = { app_key: 'KlZ4LqOF', app_secret: 'HoBJTYXdwn' };
+  const signData = Object.assign({ t: Math.floor(new Date().getTime() / 1000), n: uuid() }, appInfo);
+  const signStr = Object.values(signData).join('');
+  const sign = _md5(_md5(signStr)).split('').reverse().join('');
+  let header: any = {
     'User-Agent':
-      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.50(0x18003231) NetType/WIFI Language/zh_CN miniProgram/wx71373698c47f9a9f',
-    platform_version_name:
-      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.50(0x18003231) NetType/WIFI Language/zh_CN miniProgram/wx71373698c47f9a9f',
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.50(0x18003232) NetType/WIFI Language/zh_CN',
+    'Accept-Encoding': 'gzip,compress,br,deflate',
+    'Content-Type': 'application/json',
+    uuid: info.uuid,
+    platform_version_code: 'iOS 18.0',
+    version: '6.1.5',
+    authorization: info.authorization,
     tenancy_id: 'banu',
-    accept: 'application/json',
-    referer: 'https://cdn-scp.banu.cn/',
+    app_key: appInfo.app_key,
     source: '',
-    origin: 'https://cdn-scp.banu.cn',
-    'sec-fetch-dest': 'empty',
-    version: '2.3.8.5',
-    'sec-fetch-site': 'same-site',
-    'accept-language': 'zh-CN,zh-Hans;q=0.9',
-    'content-type': 'application/json; charset=utf-8',
-    'sec-fetch-mode': 'cors',
+    platform_version_name: 'iPhone 14 Pro Max<iPhone15,3>',
+    platform_version_weapp: '8.0.50',
+    t: signData.t,
+    n: signData.n,
+    platform_version_sdk: '3.5.1',
+    sign: sign,
+    Referer: 'https://servicewechat.com/wx71373698c47f9a9f/441/page-frame.html',
   };
-  // console.log('header :', header);
+  if (enc_data) {
+    const qsStr = qs.stringify({ ...appInfo, enc_data });
+    const code = _md5(_md5(qsStr)).split('').reverse().join('');
+    header = { ...header, code };
+  }
   return header;
 }
 
-async function sign(info) {
-  const memberInfo = { member_id: info };
+function getData(memberInfo) {
+  const iv = CryptoJS.lib.WordArray.random(16).toString();
+  const encryptStr = JSON.stringify(memberInfo);
+  const encrypted_data = CryptoJS.AES.encrypt(encryptStr, CryptoJS.enc.Utf8.parse(key), {
+    iv: CryptoJS.enc.Utf8.parse(iv),
+    mode: CryptoJS.mode.CBC,
+  }).toString();
+  return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify({ iv, encrypted_data })));
+}
+
+async function sign(infoStr) {
+  let pairs = infoStr.split(';');
+  let info: any = {};
+  pairs.forEach((pair) => {
+    let [key, value] = pair.split('=');
+    info[key] = value;
+  });
+  const memberInfo = { member_id: info.member_id };
   try {
-    const sign = await axios.post('https://cloud.banu.cn/api/sign-in', memberInfo, { headers: getHeader(memberInfo) });
+    const enc_data = getData(memberInfo);
+    const sign = await axios.post(
+      'https://cloud.banu.cn/api/sign-in',
+      { enc_data: enc_data },
+      { headers: getHeader(info, enc_data) },
+    );
     const userInfo = await axios.get('https://cloud.banu.cn/api/member/statistic', {
-      headers: getHeader(memberInfo),
+      headers: getHeader(info),
       params: memberInfo,
     });
     await notification.pushMessage({
       title: '巴奴每日签到',
-      content: `ID：${info}
-用户名：${userInfo.data.data.name}
-签到时间：${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}
-当前积分：${userInfo.data.data.points}
-签到状态：${sign.data.message}`,
+      content: `ID：${info.member_id}
+    用户名：${userInfo.data.data.name}
+    签到时间：${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}
+    当前积分：${userInfo.data.data.points}
+    签到状态：${sign.data.message}`,
       msgtype: 'text',
     });
   } catch (e) {
     await notification.pushMessage({
       title: '巴奴每日签到',
       content: `签到失败：${e}
-签到时间：${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}
-`,
+    签到时间：${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}
+    `,
       msgtype: 'text',
     });
   }
