@@ -124,9 +124,10 @@ ${signContent}`,
     });
   }
 }
-
-for (let i = 0; i < memberIds.length; i++) {
-  setTimeout(() => {
-    sign(memberIds[i]);
-  }, Math.random() * 100000);
+async function signGo() {
+  for (let i = 0; i < memberIds.length; i++) {
+    await sign(memberIds[i]);
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 100000));
+  }
 }
+signGo();
