@@ -84,18 +84,10 @@ async function sign(infoStr) {
   const currentTime = dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss');
   try {
     info.uuid = uuid();
-    const userInfo = await axios.get('https://cloud.banu.cn/api/member/statistic', {
-      headers: getHeader(info),
-      params: memberInfo,
-    });
     const days = await axios.get('https://cloud.banu.cn/api/sign-in/days', {
       params: memberInfo,
       headers: getHeader(info),
     });
-    let defaultContent = `ID：${info.member_id}
-用户名：${userInfo.data.data.name}
-签到时间：${currentTime}
-当前积分：${userInfo.data.data.points}`;
     let signContent = '';
     // 判断是否已经签到
     if (days.data.data.is_sign_in) {
@@ -109,6 +101,14 @@ async function sign(infoStr) {
       );
       signContent = `签到状态：${sign.data.message}`;
     }
+    const userInfo = await axios.get('https://cloud.banu.cn/api/member/statistic', {
+      headers: getHeader(info),
+      params: memberInfo,
+    });
+    let defaultContent = `ID：${info.member_id}
+用户名：${userInfo.data.data.name}
+签到时间：${currentTime}
+当前积分：${userInfo.data.data.points}`;
     await notification.pushMessage({
       title: '巴奴每日签到',
       content: `${defaultContent}
